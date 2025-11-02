@@ -6,81 +6,77 @@ def main():
     run_tests(AddressBook())
 
 
+def execute(str_input, address_book):
+    command, *args = bot_assistant.parse_input(str_input)
+    bot_assistant.handle_input(address_book, command, *args)
+
+
 def run_tests(address_book: AddressBook) -> None:
     # Add Mike
-    command, *args = bot_assistant.parse_input("add Mike 1234567890")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("add Mike 1234567890", address_book)
 
     # Add him a birthday
-    command, *args = bot_assistant.parse_input("add-birthday Mike 05.11.1997")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("add-birthday Mike 05.11.1997", address_book)
 
     # Print his birthday
-    command, *args = bot_assistant.parse_input("show-birthday Mike")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("show-birthday Mike", address_book)
 
     # Add Kate
-    command, *args = bot_assistant.parse_input("add Kate 1111111111")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("add Kate 1111111111", address_book)
 
     # Add her extra number
-    command, *args = bot_assistant.parse_input("add Kate 1111111112")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("add Kate 1111111112", address_book)
 
     # Add her b-day
-    command, *args = bot_assistant.parse_input("add-birthday Kate 04.11.1998")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("add-birthday Kate 04.11.1998", address_book)
 
     # Print all records
-    command, *args = bot_assistant.parse_input("all")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("all", address_book)
 
     # Change Mikes number and print updated number
-    command, *args = (bot_assistant.parse_input
-                      ("change Mike 1234567890 0987654321"))
-    bot_assistant.handle_input(address_book, command, *args)
-    command, *args = bot_assistant.parse_input("phone Mike")
-    bot_assistant.handle_input(address_book, command, *args)
-
+    execute("change Mike 1234567890 0987654321", address_book)
+    execute("phone Mike", address_book)
     # Get all upcoming b-days
-    command, *args = bot_assistant.parse_input("birthdays")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("birthdays", address_book)
 
     # Add and remove Jovani, check that he is removed
-    command, *args = bot_assistant.parse_input("add Jovani 1111111112")
-    bot_assistant.handle_input(address_book, command, *args)
-    command, *args = bot_assistant.parse_input("remove Jovani")
-    bot_assistant.handle_input(address_book, command, *args)
-    command, *args = bot_assistant.parse_input("all")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("add Jovani 1111111112", address_book)
+    execute("remove Jovani", address_book)
+    execute("all", address_book)
 
     # Input mistakes
-    command, *args = bot_assistant.parse_input("add Jovani 111111111")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("add Jovani 111111111", address_book)
 
-    command, *args = bot_assistant.parse_input("add Jovani OneOneOne")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("add Jovani OneOneOne", address_book)
 
-    command, *args = bot_assistant.parse_input("remove Jovani")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("remove Jovani", address_book)
+    execute("remove Jovani please 123", address_book)
 
-    command, *args = bot_assistant.parse_input("phone Jovani")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("phone Jovani", address_book)
 
-    command, *args = bot_assistant.parse_input("show-birthday Jovani")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("show-birthday Jovani", address_book)
 
-    command, *args = bot_assistant.parse_input("add-birthday Jovani")
-    bot_assistant.handle_input(address_book, command, *args)
-    command, *args = bot_assistant.parse_input("add-birthday Mike 20-11-1997")
-    bot_assistant.handle_input(address_book, command, *args)
-    command, *args = bot_assistant.parse_input("add-birthday Mike 20-11")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("show-birthday", address_book)
+    execute("show-birthday ", address_book)
+    execute("phone", address_book)
+    execute("phone ", address_book)
+    execute("add", address_book)
+    execute("add ", address_book)
+    execute("remove", address_book)
+    execute("remove ", address_book)
+    execute("add-birthday ", address_book)
 
-    command, *args = bot_assistant.parse_input("change ")
-    bot_assistant.handle_input(address_book, command, *args)
-    command, *args = bot_assistant.parse_input("change Jovani ")
-    bot_assistant.handle_input(address_book, command, *args)
+    execute("add-birthday Jovani", address_book)
+    execute("add-birthday Mike 20-11-1997", address_book)
+    execute("add-birthday Mike 20-11", address_book)
+    execute("add-birthday Mike ", address_book)
+
+    execute("change", address_book)
+    execute("change ", address_book)
+    execute("change Jovani ", address_book)
+
+    execute("remove 1", address_book)
+    execute("change 2", address_book)
 
 
 if __name__ == "__main__":

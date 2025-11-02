@@ -25,6 +25,10 @@ def input_error(func):
                 return "Please provide Name and date in format dd.mm.yyyy"
             if func.__name__ == "change_contact":
                 return "Please provide Name, old number and new number"
+            if (func.__name__ == "show_birthday"
+                    or func.__name__ == "find_contact"
+                    or func.__name__ == "remove_contact"):
+                return "Please provide Name"
             else:
                 raise ValueError
         except KeyboardInterrupt:
@@ -146,12 +150,13 @@ def handle_input(address_book, command, *args):
               f"\nHelp commands: {HELP_COMMANDS}"
               f"\nHello commands: {HELLO_COMMANDS}"
               f"\nAdd contact: {ADD_CONTACT} Name Phone. "
-              f"Example: {ADD_CONTACT} Mike +380935951369"
+              f"\nRemove contact: {REMOVE_CONTACT} Name"
               f"\nUpdate contact: {UPDATE_CONTACT} Name Phone. "
-              f"Example: {UPDATE_CONTACT} Mike +380935951367"
               f"\nFind contact: {FIND_CONTACT} Name. "
-              f"Example: {FIND_CONTACT} Mike"
-              f"\nShow all contacts: {ALL_CONTACTS}")
+              f"\nShow all contacts: {ALL_CONTACTS}"
+              f"\nAdd birthday: {ADD_BIRTHDAY} Name dd.mm.yyyy "
+              f"\nShow birthday: {SHOW_BIRTHDAY} Name"
+              f"\nGet upcoming: {GET_UPCOMING_BIRTHDAYS}")
 
     elif command in ADD_CONTACT:
         print(add_contact(args, address_book))
