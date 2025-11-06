@@ -37,8 +37,7 @@ class Birthday(Field):
             raise ValueError("Invalid date format. Use DD.MM.YYYY")
 
     def __str__(self):
-        return (f"Birthday "
-                f"{datetime.strftime(self.value, self.birthday_format)}")
+        return f"{datetime.strftime(self.value, self.birthday_format)}"
 
     def __repr__(self):
         return datetime.strftime(self.value, self.birthday_format)
@@ -61,7 +60,7 @@ class Record:
     def remove_phone(self, phone):
         match_phone = self.find_phone(phone)
         if match_phone:
-                self.phones.remove(phone)
+            self.phones.remove(phone)
 
     def edit_phone(self, phone, new_phone):
         match_phone = self.find_phone(phone)
@@ -77,8 +76,9 @@ class Record:
         return None
 
     def __str__(self):
-        return (f"Contact name: {self.name.value}, "
-                f"phones: {'; '.join(p.value for p in self.phones)}")
+        return (f"Contact name: {self.name.value}, \n"
+                f"phones: {'; '.join(p.value for p in self.phones)} \n"
+                f"Birthday: {self.birthday}")
 
 
 class AddressBook(UserDict):
@@ -101,6 +101,9 @@ class AddressBook(UserDict):
         birthdays = []
 
         for record in self.data.values():
+            if record.birthday is None:
+                continue
+
             user_name = record.name
             birthday_str = record.birthday
             og_birthday_date = (

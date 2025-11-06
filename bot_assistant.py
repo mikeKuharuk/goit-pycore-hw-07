@@ -25,12 +25,22 @@ def input_error(func):
                 return "Please provide Name and date in format dd.mm.yyyy"
             if func.__name__ == "change_contact":
                 return "Please provide Name, old number and new number"
-            if (func.__name__ == "show_birthday"
-                    or func.__name__ == "find_contact"
-                    or func.__name__ == "remove_contact"):
+            if func.__name__ in ("show_birthday",
+                                 "find_contact", "remove_contact"):
                 return "Please provide Name"
             else:
                 raise ValueError
+        except AttributeError as e:
+            if func.__name__ in "show_birthday":
+                if "name" in e.args[0]:
+                    return "This contact does not exist"
+                elif "birthday" in e.args[0]:
+                    return "This contact does not have a birthday record"
+
+            if func.__name__ in ["show_birthday", "find_contact",
+                                 "remove_contact", "change_contact"]:
+                return "This contact does not exist"
+
         except KeyboardInterrupt:
             quit()
 
@@ -39,6 +49,9 @@ def input_error(func):
 
 @input_error
 def parse_input(raw_input: str) -> tuple[str, list[str]]:
+    if raw_input == "":
+        return "", []
+
     cmd, *args = raw_input.split()
     cmd = cmd.strip().lower()
 
@@ -62,11 +75,6 @@ def add_contact(args, book: AddressBook):
 @input_error
 def remove_contact(args, book: AddressBook) -> str:
     name, *_ = args
-    record = book.find(name)
-
-    if record is None:
-        return f"Contact {name} not found."
-
     book.delete(name)
     return "Contact removed: {}".format(name)
 
@@ -76,14 +84,8 @@ def change_contact(args, book: AddressBook) -> str:
     name, old_phone, new_phone, *_ = args
 
     record = book.find(name)
-    if record is None:
-        return f"Contact {name} not found."
-
-    if record.find_phone(old_phone) is not None:
-        record.edit_phone(old_phone, new_phone)
-        return "Phone changed."
-    else:
-        return f"Contact {name} does not have an {old_phone} phone."
+    record.edit_phone(old_phone, new_phone)
+    return "Phone changed."
 
 
 @input_error
@@ -99,8 +101,8 @@ def find_all_contacts(book: AddressBook) -> str:
         return "Contacts book is empty"
 
     all_contacts_str = ""
-    for name, phones in book.items():
-        all_contacts_str += f"{phones}"
+    for name, record in book.items():
+        all_contacts_str += f"{record}\n"
     return all_contacts_str
 
 
@@ -108,9 +110,6 @@ def find_all_contacts(book: AddressBook) -> str:
 def add_birthday(args, book: AddressBook) -> str:
     name, birthday, *_ = args
     record = book.find(name)
-    if record is None:
-        return f"Contact {name} not found."
-
     record.add_birthday(birthday)
     return "Birthday added."
 
@@ -119,9 +118,6 @@ def add_birthday(args, book: AddressBook) -> str:
 def show_birthday(args, book: AddressBook) -> str:
     name, *_ = args
     record = book.find(name)
-    if record is None:
-        return f"Contact {name} not found."
-
     return f"{record.name} - {record.birthday}"
 
 
@@ -196,6 +192,11 @@ def main():
         user_input = input(">>>")
         command, *args = parse_input(user_input)
         handle_input(address_book, command, *args)
+
+
+def run():
+    # Proxy function to boot up Bot from outer module
+    main()
 
 
 if __name__ == '__main__':

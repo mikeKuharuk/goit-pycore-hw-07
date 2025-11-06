@@ -30,6 +30,9 @@ def run_tests(address_book: AddressBook) -> None:
     # Add her b-day
     execute("add-birthday Kate 04.11.1998", address_book)
 
+    # Add Paolinka without birthday
+    execute("add Paolinka 1111111113", address_book)
+
     # Print all records
     execute("all", address_book)
 
@@ -77,6 +80,21 @@ def run_tests(address_book: AddressBook) -> None:
 
     execute("remove 1", address_book)
     execute("change 2", address_book)
+
+    execute("a", address_book)
+    execute("", address_book)
+
+    execute("add Stephan 1231233330", address_book)
+    execute("show-birthday Stephan", address_book)
+    execute("birthdays", address_book)
+
+    print("\n")
+
+    execute("show-birthday Nicolaos", address_book)
+    execute("show-birthday Nicolaos 20.11.1997", address_book)
+    execute("change Nicolaos 1231231231 3213213213", address_book)
+    execute("phone Nicolaos", address_book)
+    execute("remove Nicolaos", address_book)
 
 
 if __name__ == "__main__":
